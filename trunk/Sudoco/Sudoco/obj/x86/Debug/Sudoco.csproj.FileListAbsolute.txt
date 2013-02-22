@@ -1,0 +1,5 @@
+C:\Users\imihalev.VAR\Desktop\sudoco\Sudoco\Sudoco\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\imihalev.VAR\Desktop\sudoco\Sudoco\Sudoco\bin\Debug\Sudoco.exe
+C:\Users\imihalev.VAR\Desktop\sudoco\Sudoco\Sudoco\bin\Debug\Sudoco.pdb
+C:\Users\imihalev.VAR\Desktop\sudoco\Sudoco\Sudoco\obj\x86\Debug\Sudoco.exe
+C:\Users\imihalev.VAR\Desktop\sudoco\Sudoco\Sudoco\obj\x86\Debug\Sudoco.pdb
