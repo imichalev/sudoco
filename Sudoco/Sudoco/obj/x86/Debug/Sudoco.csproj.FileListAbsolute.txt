@@ -3,3 +3,8 @@ C:\Users\imihalev.VAR\Desktop\sudoco\Sudoco\Sudoco\bin\Debug\Sudoco.exe
 C:\Users\imihalev.VAR\Desktop\sudoco\Sudoco\Sudoco\bin\Debug\Sudoco.pdb
 C:\Users\imihalev.VAR\Desktop\sudoco\Sudoco\Sudoco\obj\x86\Debug\Sudoco.exe
 C:\Users\imihalev.VAR\Desktop\sudoco\Sudoco\Sudoco\obj\x86\Debug\Sudoco.pdb
+C:\Documents and Settings\Administrator\Desktop\sudoco\Sudoco\Sudoco\obj\x86\Debug\Sudoco.exe
+C:\Documents and Settings\Administrator\Desktop\sudoco\Sudoco\Sudoco\obj\x86\Debug\Sudoco.pdb
+C:\Documents and Settings\Administrator\Desktop\sudoco\Sudoco\Sudoco\bin\Debug\Sudoco.exe
+C:\Documents and Settings\Administrator\Desktop\sudoco\Sudoco\Sudoco\bin\Debug\Sudoco.pdb
+C:\Documents and Settings\Administrator\Desktop\sudoco\Sudoco\Sudoco\obj\x86\Debug\ResolveAssemblyReference.cache
