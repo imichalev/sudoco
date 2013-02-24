@@ -8,6 +8,10 @@ namespace ConsoleApplication1
     class Program
     {
 
+        char[,] test = new char[9, 9];
+           char test [0,0]='h';
+
+          
 
 
 
@@ -29,54 +33,45 @@ namespace ConsoleApplication1
 
 
         static bool ValidNumber(byte y ,byte x,  char number, char [,] sudoco)
-        {
-            
-             
+        {                      
           //Check x
             for (byte i = 0; i < 9; i++)
             {
               if (number == sudoco[y,i]) return false;
+             // sudoco[y, i] = 'x';
             }
-
           //Check Y
             for (byte i = 0; i < 9; i++)
             {
                 if (number == sudoco[i, x]) return false;
+               // sudoco[i, x] = 'y';
             }
-
          // Check Cube
             for (byte i = 0; i < 9; i++)
-            {
-               
-               
-                sudoco[y,x] = 'a';
-                if ((y == 2 && x==2 ) || (y == 5 && x==5) || (y == 8 && x==8)) y -= 2;
+            {                         
+                //sudoco[y,x] = 'c';
+                if (sudoco[y,x] == number) return false;
                 if (x == 2 || x == 5 || x == 8)
                 {
                     x -= 2;
-                    y++;
+                    if (y == 2 || y == 5 || y == 8) y -= 2;
+                    else  y++;                
                 }
-                else
-                {
-                    x++;
-                }
-                // if (sudoco[ x++;x, y] == number) return false;
-
+                else x++;                             
             }
-
-
-
-
-
-
-
-
-
-
-
             return true ;
+         }
+
+
+        static void LocateEpmtySpace()
+        {
 
         }
+
+
+
+
+
 
 
    
@@ -99,7 +94,7 @@ namespace ConsoleApplication1
 
             PrintResult (sudoco);
 
-            ValidNumber(2, 4, '0', sudoco);
+            ValidNumber(2, 6, '0', sudoco);
 
             Console.WriteLine();
 
