@@ -29,6 +29,99 @@ namespace ConsoleApplication1
         }
 
 
+
+        static char[,] SudocuSolution(byte y, byte x, char[,] sudoco)
+        {
+            //check for end ; 
+              // bool Solution = false;
+              // if (EmptyCells (sudoco)==0) Solution=true;
+            
+            //find first empty cell  
+            bool goodstep ;// good step  
+            byte xline = x;
+            byte yline = y;
+               while (sudoco[yline, xline] != '\0')
+               {
+                  xline++;
+                  if (xline > sudoco.GetLength(0))
+                  {
+                    xline = 0;
+                    yline++;
+                    if (yline > sudoco.GetLength(1)) yline = 0; 
+                  }
+               }
+            //Find AvailableNumbers for this cell , if null retrun back and find another path.
+
+                 char [] AvailableNumbers = PossibleNumber(yline, xline, sudoco);
+
+                 if (AvailableNumbers[0] == '\0')
+                 {
+                     sudoco[yline, xline] = '\0';
+                     goodstep = false;
+                     //Return one possition back                 
+                 }
+                 else goodstep = true;
+
+                 if (goodstep == true)
+                 {
+
+
+                     sudoco[yline, xline] = AvailableNumbers[0];
+                 }
+
+                 else
+                 {
+                     //Check curent number in cell with AvailableNumbers and put next number 
+                     //if not return back step and put \0 in cell.
+                     byte i=0;
+                     do
+                     {
+                         if (sudoco[yline, xline] == AvailableNumbers[i]) break;
+                         if (AvailableNumbers[i] == '\0') break;
+
+                     } while (i > 9);
+
+                     if (i > 9) goodstep = false; // return step back 
+                     else
+                     {
+                         sudoco[yline, xline] = AvailableNumbers[i + 1]; // Next possible number for cell
+                     }
+                        // Increment x 
+                     x = xline++;
+                     xline++;
+                     if (xline > sudoco.GetLength(0))
+                     {
+                         xline = 0;
+                         yline++;
+                         if (yline > sudoco.GetLength(1)) yline = 0;
+                     }
+                  }
+
+                 SudocuSolution(y, x, sudoco);
+
+                       
+
+              Console.ReadKey();
+
+
+           
+ 
+             
+
+
+
+
+
+
+
+            return sudoco;
+        }
+
+
+
+
+
+
         static char[]  PossibleNumber (byte y,byte x ,char [,] sudoco)
         
         {
@@ -178,16 +271,18 @@ namespace ConsoleApplication1
             //InitSudoco();
             PrintResult (sudoco);
             //ValidNumber(2, 6, '0', sudoco)
-            Console.WriteLine(EmptyCells(sudoco));
+           
             Console.WriteLine();
-            PrintResult(LocateEpmtySpace(sudoco));
-            Console.Write(PossibleNumber (0, 2, sudoco));
+            Console.Write(SudocuSolution(0, 0, sudoco));
+
+            //PrintResult(LocateEpmtySpace(sudoco));
+            //Console.Write(PossibleNumber (0, 2, sudoco));
 
             Console.ReadKey();
             Console.WriteLine();
 
-            Console.WriteLine(EmptyCells(sudoco));
-            PrintResult(LocateEpmtySpace(sudoco));
+            //Console.WriteLine(EmptyCells(sudoco));
+            //PrintResult(LocateEpmtySpace(sudoco));
             
         }
     }
