@@ -8,9 +8,10 @@ namespace ConsoleApplication1
     class Program
     {
 
-    
 
-   
+
+        static int[] Route  ;
+        static byte RouteIndex=0;
 
         static void PrintResult(char [,] sudoco)
         {
@@ -18,7 +19,7 @@ namespace ConsoleApplication1
             {
                 for (byte x = 0; x < 9; x++)
                 {
-                    Console.Write(sudoco[y, x]+" ");
+                    Console.Write(sudoco[y, x]);
 
                 }
                 Console.WriteLine();
@@ -28,18 +29,88 @@ namespace ConsoleApplication1
             Console.ReadKey();
         }
 
+        static char[,] SudocuSolution(byte RouteIndex, char[,] sudoco)
+        {
+            // Route = x+9*y   y=mod(Route/9) 
+            //Find AvailableNumbers for this cell , if null retrun back and find another path.
+
+            int y = Route[RouteIndex] /9;
+            int x = Route[RouteIndex]-9*y;
+            char[] AvailableNumbers = PossibleNumber(y, x, sudoco);
+
+              //if not available number path is wrong ruturn step back and check another number
+            if (AvailableNumbers[0] =='\0')
+             {
+                 RouteIndex--;
+                 if (RouteIndex < 0)
+                 {
+                     // No Solution for this board
+                 }
+                 SudocuSolution(RouteIndex, sudoco);
+             }
+             
+               //if cell is empty set first number else set next number untill \0 and then step back 
+
+            if (sudoco[y, x] == '\0')
+            {
+                sudoco[y, x] = AvailableNumbers[0];
+            }
+            else
+            {
+                //locate current number in AvailebleNumbers massive
+                foreach (char number in AvailableNumbers)
+                {
+                    if (number == sudoco[y, x])
+                    {
 
 
-        static char[,] SudocuSolution(byte y, byte x, char[,] sudoco)
+                    }
+
+                }
+
+            }
+
+               
+
+               
+
+        
+
+
+            Console.Beep();
+
+
+
+
+
+
+
+
+
+
+
+            return sudoco;
+        }
+
+
+
+
+
+
+
+
+/*
+        static char[,] SudocuSolution( char[,] sudoco)
         {
             //check for end ; 
               // bool Solution = false;
               // if (EmptyCells (sudoco)==0) Solution=true;
             
-            //find first empty cell  
+            
             bool goodstep ;// good step  
             byte xline = x;
             byte yline = y;
+            //find first empty cell  
                while (sudoco[yline, xline] != '\0')
                {
                   xline++;
@@ -50,6 +121,8 @@ namespace ConsoleApplication1
                     if (yline > sudoco.GetLength(1)) yline = 0; 
                   }
                }
+               Route[RouteIndex++] = xline + 9 * yline;
+                  
             //Find AvailableNumbers for this cell , if null retrun back and find another path.
 
                  char [] AvailableNumbers = PossibleNumber(yline, xline, sudoco);
@@ -97,7 +170,7 @@ namespace ConsoleApplication1
                      }
                   }
 
-                 SudocuSolution(y, x, sudoco);
+            //     SudocuSolution(y, x, sudoco);
 
                        
 
@@ -117,12 +190,12 @@ namespace ConsoleApplication1
             return sudoco;
         }
 
+        */
 
 
 
 
-
-        static char[]  PossibleNumber (byte y,byte x ,char [,] sudoco)
+        static char[]  PossibleNumber (int y,int x ,char [,] sudoco)
         
         {
              byte counter=0;
@@ -135,7 +208,7 @@ namespace ConsoleApplication1
              return Numbers; 
         }
 
-        static bool ValidNumber(byte y, byte x, char number, char[,] sudoco)
+        static bool ValidNumber(int y, int x, char number, char[,] sudoco)
         {                      
           //Check x
             for (byte i = 0; i < 9; i++)
@@ -167,7 +240,7 @@ namespace ConsoleApplication1
          }
 
 
-        static byte EmptyCells(char[,] sudoco)
+        static void  EmptyCells(char[,] sudoco)
         {
             byte EmptyCells = 0;
             for (byte y = 0; y < sudoco.GetLength(1) ; y++)
@@ -175,29 +248,47 @@ namespace ConsoleApplication1
                 for (byte x = 0; x < sudoco.GetLength(0) ; x++)
                 {
 
-                    if (sudoco[y, x] == '\0') EmptyCells++;  
+                    if (sudoco[y, x] == '\0') EmptyCells ++;  
 
                 }               
 
             }
+            Route = new int[EmptyCells];
+             EmptyCells = 0;
+            for (byte y = 0; y < sudoco.GetLength(1); y++)
+            {
+                for (byte x = 0; x < sudoco.GetLength(0); x++)
+                {
 
-            return EmptyCells;
-        }
+                    if (sudoco[y, x] == '\0') Route[EmptyCells++]=x+9*y;
+
+                }
+
+            }
 
 
 
 
+
+
+          //  Console.Beep();
+         }
+
+
+
+/*
         static char[,] LocateEpmtySpace(char[,] sudocoinput)
         {
             Random  datachar = new  Random();
             char rnddata = Convert.ToChar(datachar.Next(0x31,0x39));
-       /*
-            for (byte i = 1; i <= 9; i++)
-            {
 
-              Console.Write(rnddata = Convert.ToChar(datachar.Next(0x31,0x39)));
-            }
-            */
+       //
+       //     for (byte i = 1; i <= 9; i++)
+       //     {
+
+       //       Console.Write(rnddata = Convert.ToChar(datachar.Next(0x31,0x39)));
+       //     }
+        
 
 
 
@@ -237,15 +328,16 @@ namespace ConsoleApplication1
              return sudocoinput ;
         }
   
+*/
 
-
+/*
            static bool Emptyspace(byte y,byte x,char [,] sudoco)
            {
                if (sudoco[y, x] == '\0') return true;
                else return false;
 
            }
-
+        */
 
 
 
@@ -269,11 +361,13 @@ namespace ConsoleApplication1
 
 
             //InitSudoco();
-            PrintResult (sudoco);
+            //PrintResult (sudoco);
             //ValidNumber(2, 6, '0', sudoco)
-           
+            EmptyCells(sudoco );
+
+
             Console.WriteLine();
-            Console.Write(SudocuSolution(0, 0, sudoco));
+            Console.Write(SudocuSolution(0 ,sudoco));
 
             //PrintResult(LocateEpmtySpace(sudoco));
             //Console.Write(PossibleNumber (0, 2, sudoco));
