@@ -11,13 +11,14 @@ namespace ConsoleApplication1
 
 
         static int[] Route  ;
-        static byte RouteIndex=0;
+        //static byte RouteIndex=0;
+        static  char[] Numbers = new char[10];
 
         static void PrintResult(char [,] sudoco)
         {
-            for (byte y = 0; y < 9; y++)
+            for (byte y = 0; y < sudoco.GetLength (1); y++)
             {
-                for (byte x = 0; x < 9; x++)
+                for (byte x = 0; x < sudoco.GetLength(0); x++)
                 {
                     Console.Write(sudoco[y, x]);
 
@@ -26,7 +27,7 @@ namespace ConsoleApplication1
             }
 
             //Pause 
-            Console.ReadKey();
+            Console.ReadLine();
         }
 
         static char[,] SudocuSolution(byte RouteIndex, char[,] sudoco)
@@ -34,63 +35,74 @@ namespace ConsoleApplication1
             // Route = x+9*y   y=mod(Route/9) 
             //Find AvailableNumbers for this cell , if null retrun back and find another path.
 
-            int y = Route[RouteIndex] /9;
-            int x = Route[RouteIndex]-9*y;
+          
+
+            if (RouteIndex == 7)
+            {
+                Console.Beep();
+            }
+            int y = Route[RouteIndex] / 9;
+            int x = Route[RouteIndex] -9 * y;
             char[] AvailableNumbers = PossibleNumber(y, x, sudoco);
 
-              //if not available number path is wrong ruturn step back and check another number
-            if (AvailableNumbers[0] =='\0')
-             {
-                 RouteIndex--;
-                 if (RouteIndex < 0)
-                 {
-                     // No Solution for this board
-                 }
-                 SudocuSolution(RouteIndex, sudoco);
-             }
-             
-               //if cell is empty set first number else set next number untill \0 and then step back 
+            //if not available number path is wrong ruturn step back and check another number
+            if (AvailableNumbers[0] == '\0')
+            {
+                sudoco[y, x] = '\0';
+                RouteIndex--;
+                if (RouteIndex < 0)
+                {
+                    Console.Beep();
+                    return sudoco;
+                    // No Solution for this board
+                }
+
+                SudocuSolution(RouteIndex, sudoco);
+            }
+
+            //if cell is empty set first number else set next number untill \0 and then step back,put \0 to cell 
 
             if (sudoco[y, x] == '\0')
             {
                 sudoco[y, x] = AvailableNumbers[0];
+                RouteIndex++;
             }
             else
             {
                 //locate current number in AvailebleNumbers massive
-                foreach (char number in AvailableNumbers)
+                int i;
+                for (i = 0; i < AvailableNumbers.GetLength(0); i++)
                 {
-                    if (number == sudoco[y, x])
-                    {
+                    if (AvailableNumbers[i] == sudoco[y, x] || AvailableNumbers[i] == '\0') break;
 
-
-                    }
 
                 }
+                // Next number from Available
+                i++;
+                sudoco[y, x] = AvailableNumbers[i];
+                // if number is empty step back
+                if (sudoco[y, x] == 0)
+                {
+                    RouteIndex--;
+                }
+                else RouteIndex++;
 
             }
 
-               
+            if (RouteIndex > 8)
+            {
+                return sudoco;
+            }
 
-               
-
-        
-
-
-            Console.Beep();
-
+                         
+             SudocuSolution(RouteIndex, sudoco);
 
 
 
-
-
-
-
-
-
-
-            return sudoco;
+            // return sudoco;
+              
         }
+          
 
 
 
@@ -195,16 +207,22 @@ namespace ConsoleApplication1
 
 
 
-        static char[]  PossibleNumber (int y,int x ,char [,] sudoco)
+       static char[]  PossibleNumber (int y,int x ,char [,] sudoco)
         
         {
              byte counter=0;
-             char [] Numbers= new char[10] ;
+             char CurrentCell;
+             CurrentCell = sudoco[y, x];
+             sudoco[y, x] = '\0';
+            
              for (char i = '1'; i <= '9'; i++)
              {
                  if (ValidNumber(y, x, i, sudoco)) Numbers[counter++] = i;
 
              }
+             sudoco[y, x] = CurrentCell;
+              //counter++;
+              Numbers[counter] = '\0';
              return Numbers; 
         }
 
@@ -253,7 +271,7 @@ namespace ConsoleApplication1
                 }               
 
             }
-            Route = new int[EmptyCells];
+           Route = new int[EmptyCells];
              EmptyCells = 0;
             for (byte y = 0; y < sudoco.GetLength(1); y++)
             {
@@ -267,7 +285,7 @@ namespace ConsoleApplication1
             }
 
 
-
+          
 
 
 
@@ -361,19 +379,17 @@ namespace ConsoleApplication1
 
 
             //InitSudoco();
-            //PrintResult (sudoco);
-            //ValidNumber(2, 6, '0', sudoco)
-            EmptyCells(sudoco );
-
-
-            Console.WriteLine();
-            Console.Write(SudocuSolution(0 ,sudoco));
+            PrintResult(sudoco);
+            EmptyCells(sudoco);
+             //SudocuSolution(0, sudoco);
+            PrintResult(SudocuSolution(0, sudoco));
+           // Console.Write();
 
             //PrintResult(LocateEpmtySpace(sudoco));
             //Console.Write(PossibleNumber (0, 2, sudoco));
 
-            Console.ReadKey();
-            Console.WriteLine();
+           // Console.ReadKey();
+            //Console.WriteLine();
 
             //Console.WriteLine(EmptyCells(sudoco));
             //PrintResult(LocateEpmtySpace(sudoco));
