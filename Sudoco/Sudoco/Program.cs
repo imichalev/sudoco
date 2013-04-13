@@ -10,8 +10,9 @@ namespace ConsoleApplication1
 
 
 
-        static int[] Route  ;
-        static  char[] Numbers = new char[10];
+        static int[] route  ;
+        static readonly char[] numbers = new char[10];
+        static char[] availableNumbers;
         
         static void PrintResult(char [,] sudoco)
         {
@@ -30,21 +31,21 @@ namespace ConsoleApplication1
             Console.ReadLine();
         }
 
-        static void SudocuSolution(byte RouteIndex , char [,] sudoco)
+        static void SudocuSolution(byte routeIndex , char [,] sudoco)
         {
             
             do
             {
-                int y = Route[RouteIndex] / 9;
-                int x = Route[RouteIndex] - 9 * y;
-                char[] AvailableNumbers = PossibleNumber(y, x, sudoco);
+                int y = route[routeIndex] / 9;
+                int x = route[routeIndex] - 9 * y;
+                 availableNumbers = PossibleNumber(y, x, sudoco);
 
                 //if not available number path is wrong ruturn step back and check another number
-                if (AvailableNumbers[0] == '\0')
+                if (availableNumbers[0] == '\0')
                 {
                     sudoco[y, x] = '\0';
-                    RouteIndex--;
-                    if (RouteIndex < 0)
+                    routeIndex--;
+                    if (routeIndex < 0)
                     {
                         Console.Beep();
                         return;
@@ -59,34 +60,34 @@ namespace ConsoleApplication1
 
                     if (sudoco[y, x] == '\0')
                     {
-                        sudoco[y, x] = AvailableNumbers[0];
-                        RouteIndex++;
+                        sudoco[y, x] = availableNumbers[0];
+                        routeIndex++;
                     }
                     else
                     {
                         //locate current number in AvailebleNumbers massive
                         int i;
-                        for (i = 0; i < AvailableNumbers.GetLength(0); i++)
+                        for (i = 0; i < availableNumbers.GetLength(0); i++)
                         {
-                            if (AvailableNumbers[i] == sudoco[y, x] || AvailableNumbers[i] == '\0') break;
+                            if (availableNumbers[i] == sudoco[y, x] || availableNumbers[i] == '\0') break;
 
 
                         }
                         // Next number from Available
                         i++;
-                        sudoco[y, x] = AvailableNumbers[i];
+                        sudoco[y, x] = availableNumbers[i];
                         // if number is empty step back
                         if (sudoco[y, x] == 0)
                         {
-                            RouteIndex--;
+                            routeIndex--;
                         }
-                        else RouteIndex++;
+                        else routeIndex++;
 
                     }
 
                 }
 
-            } while (RouteIndex < Route.GetLength(0));
+            } while (routeIndex < route.GetLength(0));
       }
    
           
@@ -94,19 +95,19 @@ namespace ConsoleApplication1
         
         {
              byte counter=0;
-             char CurrentCell;
-             CurrentCell = sudoco[y, x];
+             char currentCell;
+             currentCell = sudoco[y, x];
              sudoco[y, x] = '\0';
             
              for (char i = '1'; i <= '9'; i++)
              {
-                 if (ValidNumber(y, x, i, sudoco)) Numbers[counter++] = i;
+                 if (ValidNumber(y, x, i, sudoco)) numbers[counter++] = i;
 
              }
-             sudoco[y, x] = CurrentCell;
+             sudoco[y, x] = currentCell;
               //counter++;
-              Numbers[counter] = '\0';
-             return Numbers; 
+              numbers[counter] = '\0';
+             return numbers; 
         }
 
         static bool ValidNumber(int y, int x, char number, char[,] sudoco)
@@ -143,25 +144,25 @@ namespace ConsoleApplication1
 
         static void  EmptyCells(char [,] sudoco)
         {
-            byte EmptyCells = 0;
+            byte emptyCells = 0;
             for (byte y = 0; y < sudoco.GetLength(1) ; y++)
             {
                 for (byte x = 0; x < sudoco.GetLength(0) ; x++)
                 {
 
-                    if (sudoco[y, x] == '\0') EmptyCells ++;  
+                    if (sudoco[y, x] == '\0') emptyCells ++;  
 
                 }               
 
             }
-           Route = new int[EmptyCells];
-             EmptyCells = 0;
+           route = new int[emptyCells];
+             emptyCells = 0;
             for (byte y = 0; y < sudoco.GetLength(1); y++)
             {
                 for (byte x = 0; x < sudoco.GetLength(0); x++)
                 {
 
-                    if (sudoco[y, x] == '\0') Route[EmptyCells++]=x+9*y;
+                    if (sudoco[y, x] == '\0') route[emptyCells++]=x+9*y;
 
                 }
 
@@ -169,8 +170,23 @@ namespace ConsoleApplication1
                    
          }
 
+  /*
+        static void PrintResultAvailableNumbers ()
+        {
+            for (int i = 0; i < availableNumbers.GetLength(0); i++)
+            {
+                Console.WriteLine(availableNumbers[i]);
+
+            }
 
 
+
+
+
+
+
+        }
+ */
 
         static void Main(string[] args)
 
@@ -209,6 +225,8 @@ namespace ConsoleApplication1
             EmptyCells(sudoco);
              SudocuSolution(0,sudoco);
             PrintResult(sudoco);
+           //PrintResultAvailableNumbers();
+
            
             
         }
